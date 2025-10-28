@@ -1,0 +1,246 @@
+{
+  "name": "My Expense tracker",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -96,
+        -16
+      ],
+      "id": "bee7d447-593a-426d-a34d-99208b421e14",
+      "name": "When chat message received",
+      "webhookId": "938935b3-eaf3-41ac-93e5-17b3dae7f6ac"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Analyze the user input and break it down into below mentioned fields:\n- Credit/Debit\n- Type of expense\n- Amount\n- Total\n\nWhen it is a debit subtract from the total amount, when it is a credit add in the total amount. \nOnce you have come up with the output fields add the latest output field to the google sheet.\nIf the total becomes 5000 or below 5000 send an email to the user alerting them about low balance. Also specify to spend carefully\n\n\nThe user input is:  {{ $json.chatInput }}\nYou are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        -16
+      ],
+      "id": "103c4ec5-69b7-4d6b-bb26-79f5c31c1afc",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        128,
+        208
+      ],
+      "id": "2d75f22e-08e9-4b9b-aa2a-241c96e68f82",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "6XXzKPsN2wtPDtJ7",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        256,
+        208
+      ],
+      "id": "ca0581e9-5e1e-41bf-93aa-9f62b4e96710",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "sendTo": "yuktiairatech@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        208
+      ],
+      "id": "85ac76f8-b5a0-4b13-b25a-c9e347547267",
+      "name": "Send a message in Gmail",
+      "webhookId": "081810fc-5397-4367-836d-03c9f086a8c0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "omVMhKRYgSTOsQN5",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Qvji0XBoM7eRzMaX3Qt76qAO9FmknMBiEXB0ytviH-Q",
+          "mode": "list",
+          "cachedResultName": "Expense Tracker",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Qvji0XBoM7eRzMaX3Qt76qAO9FmknMBiEXB0ytviH-Q/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Expenses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Qvji0XBoM7eRzMaX3Qt76qAO9FmknMBiEXB0ytviH-Q/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Credit/Debit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Credit_Debit', ``, 'string') }}",
+            "Type of Expense": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Type_of_Expense', ``, 'string') }}",
+            "Amount": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Amount', ``, 'string') }}",
+            "Total": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Total', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Credit/Debit",
+              "displayName": "Credit/Debit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Type of Expense",
+              "displayName": "Type of Expense",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Amount",
+              "displayName": "Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Total",
+              "displayName": "Total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        400,
+        192
+      ],
+      "id": "d0d9fefb-4c18-48f7-b55a-48a76561cdab",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "o6IQbDhIxT9b75F0",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "66682748-6317-44bd-ad35-a68e16c759ca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c24bc0545040f920caf25dd301ec0c5c33ede328dc1f555fd0195ed7c6d69c85"
+  },
+  "id": "DgVpUVOwjNn235xh",
+  "tags": []
+}

@@ -1,0 +1,58 @@
+{
+  "name": "Webhook AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "8a0704f5-0497-409a-816c-058c047bc3e4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a1de2343-a17c-4d6e-9968-43a7620e35ae",
+      "name": "Webhook",
+      "webhookId": "8a0704f5-0497-409a-816c-058c047bc3e4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "9de3d93c-27e8-411c-8e9b-65b9f2afb4e6",
+      "name": "AI Agent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "e9498e95-d329-4f14-b679-0182d8209184",
+  "meta": {
+    "instanceId": "c24bc0545040f920caf25dd301ec0c5c33ede328dc1f555fd0195ed7c6d69c85"
+  },
+  "id": "M3uFwdnz9CBCAzgY",
+  "tags": []
+}

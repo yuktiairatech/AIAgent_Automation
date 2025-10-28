@@ -1,0 +1,93 @@
+{
+  "name": "Voice Agent workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Contact us",
+        "formDescription": "We will get back to u soon",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "placeholder": "Full Name"
+            },
+            {
+              "fieldLabel": "Email",
+              "placeholder": "Email"
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "fieldType": "number",
+              "placeholder": "Add your number"
+            },
+            {
+              "fieldLabel": "Subject",
+              "placeholder": "Subject"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        272,
+        80
+      ],
+      "id": "e51990cf-155b-483b-a196-b99b07329705",
+      "name": "On form submission",
+      "webhookId": "0ac05f62-8d27-49e2-9e2e-0ce7525b2b35"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.retellai.com/v2/create-phone-call",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer key_683adee5512b08ee1c7495dcaaf7"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"from_number\": \"+19786506340\",\n  \"to_number\": \"+91{{ $json['Phone Number'] }}\",\n  \"override_agent_id\": \"agent_8238982f934e7c1b136800cf82\",\n  \"override_agent_version\": 1,\n  \"metadata\": {},\n  \"retell_llm_dynamic_variables\": {\n    \"name\": \"{{ $json['Name'] }}\",\n    \"phone_number\": \"{{ $json['Phone Number'] }}\",\n    \"email_id\": \"{{ $json['Email'] }}\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        496,
+        80
+      ],
+      "id": "630a264b-cb35-4404-9406-0dcb57621c09",
+      "name": "HTTP Request"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1eb0a7f3-20dd-4263-a313-4855e04dfdd5",
+  "meta": {
+    "instanceId": "c24bc0545040f920caf25dd301ec0c5c33ede328dc1f555fd0195ed7c6d69c85"
+  },
+  "id": "356BknLLS7QqyBIB",
+  "tags": []
+}

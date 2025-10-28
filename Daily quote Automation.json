@@ -1,0 +1,98 @@
+{
+  "name": "Daily quote Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://quotes-api-self.vercel.app/quote",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        48,
+        224
+      ],
+      "id": "814c0146-05a9-4bd1-b279-87bfa98de912",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "sendTo": "yuktiairatech@gmail.com",
+        "subject": "Daily quotes",
+        "emailType": "text",
+        "message": "={{ $json.quote }}\n~{{ $json.author }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        272,
+        224
+      ],
+      "id": "816efb49-0c1a-4d41-a2a2-78a883cd1d9c",
+      "name": "Send a message",
+      "webhookId": "14a7409d-409e-48bd-bad3-3aee5a07a873",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "omVMhKRYgSTOsQN5",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {}
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -176,
+        224
+      ],
+      "id": "1a2422b4-e434-4eac-8baf-7bbdde81bd10",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "506022a5-6bc7-4522-b720-1fca4670f2fb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c24bc0545040f920caf25dd301ec0c5c33ede328dc1f555fd0195ed7c6d69c85"
+  },
+  "id": "4uxSCMoNNWk6VOya",
+  "tags": []
+}
